@@ -2,8 +2,8 @@
 var drev = require( 'drev' ),
   nmon = require( 'nmon' ),
   mon = new nmon(),
-  date,
-  cos = false,
+  date = new Date( '1999' ),
+  cos = true,
   services = [
     { 
       name: 'openbsd^amd64^sets',
@@ -34,25 +34,39 @@ var drev = require( 'drev' ),
       url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/i386/SHA256'
     },
     { 
-      name: 'openbsd^i386^sets',
+      name: 'openbsd^loongson^sets',
       interval: 3600000,
       check_on_start: cos,
       forced_date: date,
-      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/i386/SHA256'
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/loongson/SHA256'
     },
     { 
-      name: 'openbsd^i386^packages',
+      name: 'openbsd^loongson^packages',
       interval: 3600000,
       check_on_start: cos,
       forced_date: date,
-      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/i386/SHA256'
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/mips64el/SHA256'
+    },
+    { 
+      name: 'openbsd^macppc^sets',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/macppc/SHA256'
+    },
+    { 
+      name: 'openbsd^macppc^packages',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/powerpc/SHA256'
     },
   ];
 
 var i = 0, l = services.length;
 
 function update( o ) {
-    drev.emit( 'mcchunkie', o.name + '^' + o.date );
+  drev.emit( 'mcchunkie', o.name + '^' + o.date );
 }
 
 for ( i = 0; i < l; i++ ) {
