@@ -4,3 +4,5 @@ openbsd_mon
 
 This app monitors the primary OpenBSD mirror for updated snapshots or
 packages for various arches. 
+
+Once an update happens, it sends a pubsub to redis on the channel: 'openbsd:$arch:{packages,sets]'
