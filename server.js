@@ -1,9 +1,11 @@
 'use strict';
-var drev = require( 'drev' ),
+var redis = require( 'redis' ),
+  rclient = redis.createClient(),
   nmon = require( 'nmon' ),
   mon = new nmon(),
-  date = new Date( '1999' ),
-  cos = true,
+  // date = new Date( '1999' ),
+  date,
+  cos = false,
   services = [
     { 
       name: 'openbsd^amd64^sets',
@@ -66,7 +68,7 @@ var drev = require( 'drev' ),
 var i = 0, l = services.length;
 
 function update( o ) {
-  drev.emit( 'mcchunkie', o.name + '^' + o.date );
+  rclient.publish( 'mcchunkie', o.name + '^' + o.date );
 }
 
 for ( i = 0; i < l; i++ ) {
@@ -76,5 +78,3 @@ for ( i = 0; i < l; i++ ) {
 }
 
 mon.monitor();
-
-drev.start();
