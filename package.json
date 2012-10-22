@@ -5,7 +5,8 @@
   "version": "0.0.0",
   "dependencies": {
     "nmon": "~0.2.2",
-    "redis": "~0.7.2"
+    "redis": "~0.7.2",
+    "pushover-notifications": "~0.1.2"
   },
   "devDependencies": {},
   "optionalDependencies": {},
