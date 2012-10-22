@@ -1,10 +1,20 @@
 'use strict';
 var redis = require( 'redis' ),
+  fs = require( 'fs' ),
+  pushover = require( 'pushover-notifications' ),
+  push,
   rclient = redis.createClient(),
   nmon = require( 'nmon' ),
   mon = new nmon(),
+  noties,
+  msg_for,
+  notie_list = "list.json",
+  msg = {},
+  key_file = "key.json",
+  key = '',
   // date = new Date( '1999' ),
   date,
+  // cos = true,
   cos = false,
   services = [
     { 
@@ -67,14 +77,64 @@ var redis = require( 'redis' ),
 
 var i = 0, l = services.length;
 
+function loadNoties( fn ) {
+  fs.readFile( notie_list, function( err, data ) {
+    if ( err ) {
+      throw err;
+    }
+
+    noties = JSON.parse( data );
+    fn.call();
+  });
+}
+
 function update( o ) {
-  rclient.publish( 'mcchunkie', o.name + '^' + o.date );
+  var parts, i, l;
+  loadNoties( function() {
+    parts = o.name.split( '^' );
+
+    msg.title = 'New ' + parts[2] + ' for ' + parts[1];
+    msg.timestamp = o.date;
+    msg.message = '<3';
+
+    rclient.publish( 'mcchunkie', o.name + '^' + o.date );
+
+
+    for ( i = 0, l = noties.length; i < l; i++ ) {
+      msg_for = noties[i].split( '^' );
+      msg.user = msg_for[0];
+
+      if ( msg_for[1].match( parts[1] ) ) {
+        push.send( msg, function( err, res ) {
+          if ( err ) {
+            throw err;
+          }
+        });
+      }
+
+    }
+
+  });
 }
 
-for ( i = 0; i < l; i++ ) {
-  var a = services[i];
-  mon.create( 'http', a );
-  mon.on( a.name, update );
-}
+fs.readFile( key_file, function( err, data ) {
+  if ( err ) {
+    throw err;
+  }
 
-mon.monitor();
+  key = JSON.parse( data.toString() );
+  key = key.key;
+
+  push = new pushover( {
+    token: key
+  });
+
+  for ( i = 0; i < l; i++ ) {
+    var a = services[i];
+    mon.create( 'http', a );
+    mon.on( a.name, update );
+  }
+
+  mon.monitor();
+});
+
