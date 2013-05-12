@@ -32,6 +32,34 @@ var redis = require( 'redis' ),
       url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/amd64/SHA256'
     },
     { 
+      name: 'openbsd^armish^sets',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/armish/SHA256'
+    },
+    { 
+      name: 'openbsd^arm^packages',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/arm/SHA256'
+    },
+    { 
+      name: 'openbsd^octeon^sets',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/octeon/SHA256'
+    },
+    { 
+      name: 'openbsd^octeon^packages',
+      interval: 3600000,
+      check_on_start: cos,
+      forced_date: date,
+      url: 'http://ftp.openbsd.org/pub/OpenBSD/snapshots/packages/mips64/SHA256'
+    },
+    { 
       name: 'openbsd^i386^sets',
       interval: 3600000,
       check_on_start: cos,
@@ -93,7 +121,7 @@ function update( o ) {
   loadNoties( function() {
     parts = o.name.split( '^' );
 
-    msg.title = 'New ' + parts[2] + ' for ' + parts[1];
+    msg.title = 'New ' + parts[2] + ' for ' + parts[1] + ' (' + o.date + ')';
     msg.timestamp = o.date;
     msg.message = '<3';
 
