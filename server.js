@@ -1,7 +1,7 @@
 'use strict';
 var redis = require( 'redis' ),
   fs = require( 'fs' ),
-  pushover = require( 'pushover-notifications' ),
+  // pushover = require( 'pushover-notifications' ),
   push,
   rclient = redis.createClient(),
   nmon = require( 'nmon' ),
@@ -133,11 +133,11 @@ function update( o ) {
       msg.user = msg_for[0];
 
       if ( msg_for[1].match( parts[1] ) ) {
-        push.send( msg, function( err, res ) {
-          if ( err ) {
-            throw err;
-          }
-        });
+        // push.send( msg, function( err, res ) {
+          // if ( err ) {
+            // throw err;
+          // }
+        // });
       }
 
     }
@@ -150,12 +150,12 @@ fs.readFile( key_file, function( err, data ) {
     throw err;
   }
 
-  key = JSON.parse( data.toString() );
-  key = key.key;
+  // key = JSON.parse( data.toString() );
+  // key = key.key;
 
-  push = new pushover( {
-    token: key
-  });
+  // push = new pushover( {
+  //   token: key
+  // });
 
   for ( i = 0; i < l; i++ ) {
     var a = services[i];
