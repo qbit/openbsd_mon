@@ -149,7 +149,7 @@ function update( o ) {
     loadNoties( function() {
 	parts = o.name.split( '^' );
 
-	msg.title = 'New ' parts[0] + ' ' + parts[2] + ' for ' + parts[1] + ' (' + o.date + ')';
+	msg.title = 'New ' + parts[0] + ' ' + parts[2] + ' for ' + parts[1] + ' (' + o.date + ')';
 	msg.timestamp = o.date;
 	msg.message = '<3';
 
